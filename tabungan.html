@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diary Bank</title>
+    <link rel="stylesheet" href="tabunga.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap">
+</head>
+<body>
+
+   <nav class="navbar">
+        <a href="https://dikiwebaja.github.io/Tools-All-In-One/" class="logo">Dikz.Web</a>
+        <ul class="nav-links">
+            <li><a href="tabungan.html"><i class="fa-solid fa-house-user"></i> Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn"><i class="fa-solid fa-share-nodes"></i> Social Media <i class="fa-solid fa-arrow-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="https://www.instagram.com/dik.whydn?igsh=MTRkbHQxcnlxb20zOQ==" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram ⤶</a>
+                    <a href="https://www.tiktok.com/@fdikiwahyudin?_t=ZS-90j4WsXjA87&_r=1" target="_blank"><i class="fa-brands fa-tiktok"></i> Tiktok ⤶</a>
+                    <a href="https://www.facebook.com/share/1D2dwnJ7a6/" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook ⤶</a>
+                    <a href="https://t.me/ZeltaSparkle" target="_blank"><i class="fa-brands fa-telegram"></i> Telegram ⤶</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn"><i class="fa-solid fa-medal"></i> About Me <i class="fa-solid fa-arrow-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="CONTACT.html"><i class="fa-solid fa-envelope"></i> Contact Me!</a>
+                    <a href=" https://dikiwebaja.github.io/Portofolio/"><i class="fa-solid fa-user"></i> Portofolio</a>
+                    <a href="RATING.html"><i class="fa-solid fa-star-half-stroke"></i> Rating</a>
+                    <a href="DONATE.html"><i class="fa-solid fa-hand-holding-medical"></i> Support Me </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    
+
+    <!-- Background Video -->
+    <div class="video-container">
+        <video autoplay muted loop playsinline class="video-bg">
+            <source src="SABER.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Celengan Container -->
+    <div class="celengan-wrapper">
+        <div class="header-title">
+            <div class="header-placeholder"></div>
+            <h1>Diary Bank</h1>
+            <button class="header-menu-btn" onclick="toggleHeaderMenu(event)" title="Opsi">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            
+            <div class="header-dropdown-menu" id="header-dropdown">
+                <a href="HELP.html" style="text-decoration: none;">
+                    <button><i class="fa-solid fa-warning"></i> Report</button>
+                </a>
+                <button onclick="exportData()"><i class="fa-solid fa-download"></i> Export Data</button>
+                <button onclick="triggerImport()"><i class="fa-solid fa-upload"></i> Import Data</button>
+                <button class="danger-option" onclick="resetData()"><i class="fa-solid fa-trash"></i> Reset Semua</button>
+            </div>
+            <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="importData(event)">
+        </div>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" id="tab-berlangsung" onclick="switchTab('berlangsung')">Berlangsung</button>
+            <button class="tab-btn" id="tab-tercapai" onclick="switchTab('tercapai')">Tercapai</button>
+        </div>
+
+        <!-- Action & Filter Area -->
+        <div class="action-filter-container">
+            <!-- Tombol Tambah Celengan (UI sama kaya urutkan) -->
+            <button class="btn-action-trigger btn-add-trigger" onclick="openModal()">
+                <i class="fa-solid fa-plus"></i> <span>Tambahkan Celengan</span>
+            </button>
+            
+            <!-- Tombol Urutkan -->
+            <button class="btn-action-trigger" onclick="openSortModal()">
+                <i class="fa-solid fa-arrow-down-short-wide"></i> <span id="selected-sort-label">Urutkan</span>
+            </button>
+        </div>
+
+        <!-- Tempat List Card Celengan -->
+        <div class="card-list" id="celengan-list"></div>
+    </div>
+
+    <!-- Modal Form Tambah Celengan -->
+    <div class="modal" id="modal-form">
+        <div class="modal-content">
+            <h3>Tambah Celengan Baru</h3>
+            
+            <!-- URL Gambar -->
+            <div class="form-group">
+                <label>URL Gambar</label>
+                <input type="text" id="input-gambar-url" placeholder="https://link-gambar.com/foto.jpg" oninput="previewUrlImage(this.value)">
+            </div>
+
+            <!-- Upload File Foto -->
+            <div class="form-group">
+                <label>Atau Upload Foto</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="input-image" accept="image/*" class="file-input-hidden" onchange="previewFileImage(event)">
+                    <label for="input-image" class="btn-file-custom">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span id="file-name-text">Pilih Foto</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Container Preview Gambar -->
+            <div class="form-group" id="image-preview-container" style="display: none; text-align: center;">
+                <img id="image-preview" src="" alt="Preview" style="max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 5px;">
+            </div>
+
+            <!-- Nama Tabungan -->
+            <div class="form-group">
+                <label>Nama Tabungan</label>
+                <input type="text" id="input-nama" placeholder="misal: Sepatu Baru">
+            </div>
+
+            <!-- URL Produk -->
+            <div class="form-group">
+                <label>URL Produk (Opsional)</label>
+                <input type="url" id="input-produk-url" placeholder="https://tokopedia.com/produk-kamu">
+            </div>
+
+            <!-- Target Tabungan -->
+            <div class="form-group">
+                <label for="input-target">Target Tabungan</label>
+                <div class="input-currency-wrapper">
+                    <div class="currency-select-box">
+                        <select id="input-currency" class="currency-dropdown">
+                            <option value="IDR" selected>IDR (Rp)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="SGD">SGD (S$)</option>
+                            <option value="MYR">MYR (RM)</option>
+                            <option value="SAR">SAR (﷼)</option>
+                            <option value="AUD">AUD (A$)</option>
+                            <option value="CNY">CNY (¥)</option>
+                        </select>
+                    </div>
+                    <input type="text" id="input-target" inputmode="numeric" placeholder="Contoh: 1.000.000" class="input-with-currency" oninput="formatRupiahInput(this)">
+                </div>
+            </div>
+
+            <!-- Rencana Pengisian -->
+            <div class="form-group">
+                <label>Rencana Pengisian</label>
+                <div class="plan-options">
+                    <label class="plan-btn">
+                        <input type="radio" name="input-rencana" value="harian" checked>
+                        <div class="plan-card">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <span>Harian</span>
+                        </div>
+                    </label>
+                    <label class="plan-btn">
+                        <input type="radio" name="input-rencana" value="mingguan">
+                        <div class="plan-card">
+                            <i class="fa-solid fa-calendar-week"></i>
+                            <span>Mingguan</span>
+                        </div>
+                    </label>
+                    <label class="plan-btn">
+                        <input type="radio" name="input-rencana" value="bulanan">
+                        <div class="plan-card">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>Bulanan</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Nominal Pengisian -->
+            <div class="form-group">
+                <label>Nominal Pengisian</label>
+                <input type="text" id="input-nominal-rutin" inputmode="numeric" placeholder="Contoh: 10.000" oninput="formatRupiahInput(this)">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Batal</button>
+                <button class="btn-save" onclick="saveCelengan()">Simpan Target</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sort -->
+    <div class="modal" id="modal-sort">
+        <div class="modal-content sort-modal-content">
+            <div class="sort-modal-header">
+                <h3>Urutkan Berdasarkan</h3>
+                <i class="fa-solid fa-xmark close-icon" onclick="closeSortModal()"></i>
+            </div>
+            
+            <div class="sort-options-list">
+                <button class="sort-option-btn active" data-value="terkumpul" onclick="selectSortOption(this)">
+                    <i class="fa-solid fa-coins"></i> Nominal Terkumpul
+                </button>
+                <button class="sort-option-btn" data-value="harga_tinggi" onclick="selectSortOption(this)">
+                    <i class="fa-solid fa-arrow-up-wide-short"></i> Harga Tertinggi
+                </button>
+                <button class="sort-option-btn" data-value="harga_rendah" onclick="selectSortOption(this)">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i> Harga Terendah
+                </button>
+                <button class="sort-option-btn" data-value="tanggal_baru" onclick="selectSortOption(this)">
+                    <i class="fa-solid fa-calendar-plus"></i> Tanggal Terbaru
+                </button>
+                <button class="sort-option-btn" data-value="tanggal_lama" onclick="selectSortOption(this)">
+                    <i class="fa-solid fa-calendar-minus"></i> Tanggal Terlama
+                </button>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeSortModal()">Keluar</button>
+                <button class="btn-save" onclick="applySort()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus Celengan -->
+    <div class="modal" id="modal-confirm-delete">
+        <div class="modal-content" style="max-width: 360px; text-align: center;">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 2.5rem; color: #ff4d4d; margin-bottom: 15px;"></i>
+            <h3 style="margin-bottom: 10px;">Hapus Tabungan?</h3>
+            <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; line-height: 1.4;">
+                Data tabungan ini bakal dihapus permanen dan nggak bisa dikembaliin lagi.
+            </p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+                <button class="btn-delete-danger" onclick="confirmDeleteCelengan()">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let celenganData = JSON.parse(localStorage.getItem('celenganData')) || [];
+        let currentTab = 'berlangsung';
+        let activeSort = 'terkumpul';
+        let tempSort = 'terkumpul';
+        let activeImageSource = '';
+        let deleteTargetId = null;
+
+        function saveDataToStorage() {
+            localStorage.setItem('celenganData', JSON.stringify(celenganData));
+        }
+
+        /* --- Auto Format Titik Real-time --- */
+        function formatRupiahInput(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value) {
+                input.value = new Intl.NumberFormat('id-ID').format(value);
+            } else {
+                input.value = '';
+            }
+        }
+
+        /* --- Helper Bersihkan Titik Sebelum Simpan --- */
+        function cleanNumber(valueStr) {
+            if (!valueStr) return 0;
+            return parseInt(valueStr.toString().replace(/\./g, ''), 10) || 0;
+        }
+
+        /* --- Dropdown Menu Header --- */
+        function toggleHeaderMenu(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('header-dropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('header-dropdown');
+            if (dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        function resetData() {
+            if (confirm("Apakah kamu yakin ingin menghapus SELURUH data celengan? Tindakan ini tidak bisa dibatalkan!")) {
+                celenganData = [];
+                localStorage.removeItem('celenganData');
+                renderCelengan();
+            }
+        }
+
+        function exportData() {
+            if (celenganData.length === 0) {
+                alert("Belum ada data celengan untuk di-export.");
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(celenganData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `celengan_backup_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function triggerImport() {
+            document.getElementById('import-file-input').click();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        celenganData = imported;
+                        saveDataToStorage();
+                        renderCelengan();
+                        alert("Data berhasil di-import!");
+                    } else {
+                        alert("Format file tidak valid.");
+                    }
+                } catch (err) {
+                    alert("Gagal membaca file JSON.");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        /* --- Helper & Handlers --- */
+        function formatCurrency(num, currency = 'IDR') {
+            const symbols = {
+                'IDR': 'Rp', 'USD': '$', 'EUR': '€', 'JPY': '¥', 
+                'GBP': '£', 'SGD': 'S$', 'MYR': 'RM', 'SAR': '﷼', 
+                'AUD': 'A$', 'CNY': '¥'
+            };
+            const symbol = symbols[currency] || 'Rp';
+            return symbol + ' ' + Number(num).toLocaleString('id-ID');
+        }
+
+        function previewFileImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('file-name-text').innerText = file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    activeImageSource = e.target.result;
+                    document.getElementById('input-gambar-url').value = '';
+                    showPreview(activeImageSource);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewUrlImage(url) {
+            if (url.trim() !== '') {
+                activeImageSource = url.trim();
+                document.getElementById('input-image').value = '';
+                document.getElementById('file-name-text').innerText = 'Pilih Foto';
+                showPreview(activeImageSource);
+            } else {
+                activeImageSource = '';
+                document.getElementById('image-preview-container').style.display = 'none';
+            }
+        }
+
+        function showPreview(src) {
+            const imgElement = document.getElementById('image-preview');
+            imgElement.src = src;
+            document.getElementById('image-preview-container').style.display = 'block';
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            renderCelengan();
+        }
+
+        function openModal() {
+            document.getElementById('modal-form').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-form').classList.remove('active');
+            clearInputs();
+        }
+
+        function clearInputs() {
+            document.getElementById('input-nama').value = '';
+            document.getElementById('input-produk-url').value = '';
+            document.getElementById('input-target').value = '';
+            document.getElementById('input-nominal-rutin').value = '';
+            document.getElementById('input-image').value = '';
+            document.getElementById('input-gambar-url').value = '';
+            document.getElementById('input-currency').value = 'IDR';
+            document.getElementById('file-name-text').innerText = 'Pilih Foto';
+            
+            const radioDefault = document.querySelector('input[name="input-rencana"][value="harian"]');
+            if (radioDefault) radioDefault.checked = true;
+
+            document.getElementById('image-preview-container').style.display = 'none';
+            activeImageSource = '';
+        }
+
+        function openSortModal() {
+            tempSort = activeSort;
+            document.querySelectorAll('.sort-option-btn').forEach(btn => {
+                if(btn.getAttribute('data-value') === activeSort) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            document.getElementById('modal-sort').classList.add('active');
+        }
+
+        function closeSortModal() {
+            document.getElementById('modal-sort').classList.remove('active');
+        }
+
+        function selectSortOption(btn) {
+            document.querySelectorAll('.sort-option-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            tempSort = btn.getAttribute('data-value');
+        }
+
+        function applySort() {
+            activeSort = tempSort;
+            const activeBtn = document.querySelector(`.sort-option-btn[data-value="${activeSort}"]`);
+            if(activeBtn) {
+                document.getElementById('selected-sort-label').innerText = 'Urutkan: ' + activeBtn.innerText.trim();
+            }
+            closeSortModal();
+            renderCelengan();
+        }
+
+        function saveCelengan() {
+            const nama = document.getElementById('input-nama').value.trim();
+            const produkUrl = document.getElementById('input-produk-url').value.trim();
+            
+            const target = cleanNumber(document.getElementById('input-target').value);
+            const nominalRutin = cleanNumber(document.getElementById('input-nominal-rutin').value);
+            const mataUang = document.getElementById('input-currency').value;
+            
+            const selectedRencanaEl = document.querySelector('input[name="input-rencana"]:checked');
+            const rencana = selectedRencanaEl ? selectedRencanaEl.value : 'harian';
+
+            if (!nama || !target || target <= 0) {
+                alert('Nama Tabungan dan Target Nominal wajib diisi!');
+                return;
+            }
+
+            const now = new Date();
+            const tanggalDibuat = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+
+            const itemBaru = {
+                id: Date.now(),
+                nama: nama,
+                produkUrl: produkUrl,
+                target: target,
+                terkumpul: 0,
+                nominalRutin: nominalRutin,
+                mataUang: mataUang,
+                rencana: rencana,
+                gambar: activeImageSource,
+                tanggalDibuat: tanggalDibuat,
+                history: []
+            };
+
+            celenganData.push(itemBaru);
+            saveDataToStorage();
+            closeModal();
+            renderCelengan();
+        }
+
+        /* --- FUNGSI HAPUS GLOBAL --- */
+        window.hapusCelengan = function(id) {
+            deleteTargetId = id;
+            document.getElementById('modal-confirm-delete').classList.add('active');
+        };
+
+        function closeDeleteModal() {
+            deleteTargetId = null;
+            document.getElementById('modal-confirm-delete').classList.remove('active');
+        }
+
+        function confirmDeleteCelengan() {
+            if (deleteTargetId !== null) {
+                celenganData = celenganData.filter(item => item.id !== deleteTargetId);
+                saveDataToStorage();
+                renderCelengan();
+                closeDeleteModal();
+            }
+        }
+
+        /* --- Render Celengan --- */
+        function renderCelengan() {
+            const container = document.getElementById('celengan-list');
+
+            let filtered = celenganData.filter(item => {
+                if (currentTab === 'berlangsung') return item.terkumpul < item.target;
+                return item.terkumpul >= item.target;
+            });
+
+            filtered.sort((a, b) => {
+                switch (activeSort) {
+                    case 'terkumpul': return b.terkumpul - a.terkumpul;
+                    case 'harga_tinggi': return b.target - a.target;
+                    case 'harga_rendah': return a.target - b.target;
+                    case 'tanggal_baru': return b.id - a.id;
+                    case 'tanggal_lama': return a.id - b.id;
+                    default: return b.id - a.id;
+                }
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state" style="text-align: center; padding: 30px 10px;">
+                        <i class="fa-solid fa-piggy-bank" style="font-size: 2.5rem; margin-bottom: 10px; color: var(--accent-neon);"></i>
+                        <p style="margin-bottom: 5px;">Belum ada celengan ${currentTab}.</p>
+                        <small style="color: var(--text-dim);">Klik tombol Tambahkan Celengan di atas untuk menambah!</small>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => {
+                const percent = Math.min(Math.round((item.terkumpul / item.target) * 100), 100);
+                const sisaNominal = item.target - item.terkumpul;
+                const sisaPeriode = item.nominalRutin > 0 ? Math.ceil(sisaNominal / item.nominalRutin) : 0;
+                
+                let teksSisa = 'Bebas';
+                if (percent < 100 && sisaPeriode > 0) {
+                    const unit = item.rencana === 'mingguan' ? 'Minggu' : (item.rencana === 'bulanan' ? 'Bulan' : 'Hari');
+                    teksSisa = `${sisaPeriode} ${unit} Lagi`;
+                } else if (percent >= 100) {
+                    teksSisa = '🎉 Sudah Tercapai!';
+                }
+
+                const imgHtml = item.gambar 
+                    ? `<img src="${item.gambar}" alt="${item.nama}">`
+                    : `<i class="fa-solid fa-box-open" style="font-size: 3rem; color: var(--text-dim);"></i>`;
+
+                return `
+                    <div class="celengan-card" style="position: relative; z-index: 5; pointer-events: auto;">
+                        <div class="celengan-item-title" style="display: flex; justify-content: space-between; align-items: center;">
+                            <a href="halaman tabungan.html?id=${item.id}" style="color: inherit; text-decoration: none; font-weight: bold;">
+                                ${item.nama} <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem; margin-left: 5px;"></i>
+                            </a>
+                            <i class="fa-solid fa-trash-can" onclick="hapusCelengan(${item.id})" style="cursor: pointer; color: #ff4d4d; font-size: 0.9rem;" title="Hapus Celengan"></i>
+                        </div>
+                        <div class="item-image-box" onclick="window.location.href='halaman tabungan.html?id=${item.id}'" style="cursor: pointer;">${imgHtml}</div>
+                        
+                        <!-- Details & Progress Line -->
+                        <div class="card-details-wrapper">
+                            <div class="card-details-header">
+                                <div class="target-price">${formatCurrency(item.terkumpul, item.mataUang)} / ${formatCurrency(item.target, item.mataUang)}</div>
+                                <div class="percent-badge">${percent}%</div>
+                            </div>
+                            
+                            <!-- Progress Bar Line -->
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: ${percent}%;"></div>
+                            </div>
+
+                            <div class="daily-target">${item.nominalRutin ? formatCurrency(item.nominalRutin, item.mataUang) + ' / ' + item.rencana : 'Tanpa Target Rutin'}</div>
+                        </div>
+
+                        <div class="card-actions" style="position: relative; z-index: 10;">
+                            <div class="days-left">${teksSisa}</div>
+                            ${percent < 100 ? `<a href="halaman tabungan.html?id=${item.id}&action=setor" class="btn-add-money" style="cursor: pointer; text-decoration: none; display: inline-block; text-align: center; pointer-events: auto;">+ Setor</a>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCelengan();
+        });
+    </script>
+</body>
+</html>

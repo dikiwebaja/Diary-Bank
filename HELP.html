@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Business - Web Aneh</title>
+    <link rel="stylesheet" href="HELP.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .file-hint {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
+            display: block;
+        }
+
+        #result-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+        .status-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid #22c55e;
+        }
+        .status-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-overlay"></div>
+    <nav class="navbar">
+        <a href="https://dikiwebaja.github.io/Tools-All-In-One/" class="logo">Dikz.Web</a>
+        <ul class="nav-links">
+            <li><a href="tabungan.html"><i class="fa-solid fa-house-user"></i> Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn"><i class="fa-solid fa-share-nodes"></i> Social Media <i class="fa-solid fa-arrow-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="https://www.instagram.com/dik.whydn?igsh=MTRkbHQxcnlxb20zOQ==" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram ⤶</a>
+                    <a href="https://www.tiktok.com/@fdikiwahyudin?_t=ZS-90j4WsXjA87&_r=1" target="_blank"><i class="fa-brands fa-tiktok"></i> Tiktok ⤶</a>
+                    <a href="https://www.facebook.com/share/1D2dwnJ7a6/" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook ⤶</a>
+                    <a href="https://t.me/ZeltaSparkle" target="_blank"><i class="fa-brands fa-telegram"></i> Telegram ⤶</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn"><i class="fa-solid fa-medal"></i> About Me <i class="fa-solid fa-arrow-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="CONTACT.html"><i class="fa-solid fa-envelope"></i> Contact Me!</a>
+                    <a href=" https://dikiwebaja.github.io/Portofolio/"><i class="fa-solid fa-user"></i> Portofolio</a>
+                    <a href="RATING.html"><i class="fa-solid fa-star-half-stroke"></i> Rating</a>
+                    <a href="DONATE.html"><i class="fa-solid fa-hand-holding-medical"></i> Support Me </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    
+
+    <main class="section-container">
+        <div class="card">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            </svg>
+            <div class="header-wrapper">
+                <h1>Dikz<span class="accent-purple">Web </h1>
+                <div class="status-badge">
+                    <span class="status-dot"></span> PROBLEM REPORT
+                </div>
+            </div>
+
+            <form id="contactForm">
+                <input type="hidden" name="access_key" value="3f422e90-6e23-4f5a-843c-b20ae85ed991">
+                <input type="hidden" name="subject" value="💼 [PROJEK/KERJASAMA] Ada Penawaran Baru di Web Aneh!">
+                <input type="hidden" name="from_name" value="Business Router Engine">
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label class="form-label"><i class="fas fa-user accent-purple"></i> Nama :</label>
+                    <input type="text" name="Nama_Klien_atau_Brand" class="custom-input" placeholder="Contoh: Nama / Anonim" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label class="form-label"><i class="fas fa-envelope accent-purple"></i> Email Saya :</label>
+                    <input type="email" name="Email_Klien" class="custom-input" placeholder="nama@email.com" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label"><i class="fas fa-file-alt accent-purple"></i> Detail Masalah :</label>
+                    <textarea name="Brief_Detail_Projek" class="custom-input" placeholder="Jelaskan detail masalah dan apa yang bisa kami bantu" required></textarea>
+                    <small class="file-hint">*Setelah menekan tombol kirim, kamu akan diarahkan ke Google Drive jika ingin mengunggah foto bukti.</small>
+                </div>
+
+                <button type="submit" id="btnSubmit" class="btn-submit-neon">
+                    Kirim & Upload Bukti <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+
+            <div id="result-message"></div>
+
+            <div class="back-link" style="text-decoration: none;">
+                <a href="tabungan.html"><i class="fas fa-arrow-left"></i> Back to menu</a>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const form = document.getElementById('contactForm');
+        const resultMsg = document.getElementById('result-message');
+        const btnSubmit = document.getElementById('btnSubmit');
+
+        // Ganti link di bawah ini dengan link folder Google Drive kamu
+        const gdriveFolderUrl = "https://drive.google.com/drive/folders/1eS7GT1Zbf9f402NEmmZhrAYKMDyosTS8";
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
+            resultMsg.style.display = 'none';
+
+            const formData = new FormData(form);
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(async (response) => {
+                let json = await response.json();
+                if (response.status == 200) {
+                    showStatus('Pesan berhasil terkirim! Membuka Google Drive...', true);
+                    form.reset();
+                    
+                    // Redirect otomatis ke Google Drive di tab baru setelah 1.5 detik
+                    setTimeout(() => {
+                        window.open(gdriveFolderUrl, '_blank');
+                    }, 1500);
+                } else {
+                    showStatus(json.message || 'Gagal mengirim pesan, coba lagi nanti.', false);
+                }
+            })
+            .catch(error => {
+                showStatus('Terjadi kesalahan jaringan atau koneksi.', false);
+            })
+            .finally(() => {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'Kirim & Upload Bukti <i class="fas fa-paper-plane"></i>';
+            });
+        });
+
+        function showStatus(text, isSuccess) {
+            resultMsg.innerText = text;
+            resultMsg.className = isSuccess ? 'status-success' : 'status-error';
+            resultMsg.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
